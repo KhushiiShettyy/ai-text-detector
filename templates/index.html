@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Text Detector — Linguistic Forensics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="grain"></div>
+
+<header class="site-header">
+  <div class="brand">
+    <span class="brand-mark">§</span>
+    <div>
+      <p class="eyebrow">Linguistic Forensics Lab</p>
+      <p class="brand-name">Case File 001 — Authorship Analysis</p>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="hero-copy">
+      <h1>Was it written<br>by a human,<br><em>or something else?</em></h1>
+      <p class="lede">
+        Paste a passage below. This tool reads its sentence rhythm, vocabulary,
+        and structure the way an examiner reads handwriting — then reports
+        what it finds, with the evidence shown, not hidden.
+      </p>
+      <p class="note">⚠ Calibrated for formal writing — essays, articles, reports. 50+ words recommended.</p>
+    </div>
+
+    <div class="hero-panel">
+      <label class="field-label" for="inputText">Submitted text</label>
+      <textarea id="inputText" placeholder="Paste a passage here (a few sentences minimum)…"></textarea>
+      <button id="analyzeBtn">
+        <span>Run Analysis</span>
+      </button>
+      <div id="errorBox" class="error-box hidden"></div>
+    </div>
+  </section>
+
+  <section id="result" class="result hidden">
+
+    <div class="ticket">
+      <div class="ticket-top">
+        <span class="ticket-label">Verdict</span>
+        <span class="ticket-id" id="ticketId">CASE-0000</span>
+      </div>
+
+      <div class="stamp-row">
+        <div id="stampVerdict" class="stamp">HUMAN</div>
+        <div class="confidence-block">
+          <span class="field-label">Confidence</span>
+          <div class="gauge">
+            <div class="gauge-track">
+              <div id="confidenceBar" class="gauge-fill"></div>
+              <div class="gauge-ticks">
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+            <span class="gauge-value"><span id="confidenceValue">0</span>%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="evidence">
+        <p class="field-label">Evidence — linguistic signature</p>
+        <ul id="reasoningList" class="evidence-list"></ul>
+      </div>
+
+      <p class="ticket-footnote">
+        Findings are statistical, not certain. Polished human writing can
+        resemble AI-generated text under this method — see limitations below.
+      </p>
+    </div>
+  </section>
+
+  <section class="pipeline">
+    <p class="section-eyebrow">How the examination works</p>
+    <h2 class="section-title">From raw text to verdict, in four steps</h2>
+
+    <div class="pipe-row">
+      <div class="pipe-step">
+        <span class="pipe-num">01</span>
+        <h3>Submission</h3>
+        <p>Your passage is received as plain text — no formatting or metadata is used.</p>
+      </div>
+      <div class="pipe-arrow" aria-hidden="true">
+        <svg viewBox="0 0 60 24"><path d="M2 12H54M54 12L42 3M54 12L42 21" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="pipe-step">
+        <span class="pipe-num">02</span>
+        <h3>Feature extraction</h3>
+        <p>Nine measurements are taken: sentence rhythm, vocabulary richness, word length, readability, punctuation density.</p>
+      </div>
+      <div class="pipe-arrow" aria-hidden="true">
+        <svg viewBox="0 0 60 24"><path d="M2 12H54M54 12L42 3M54 12L42 21" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="pipe-step">
+        <span class="pipe-num">03</span>
+        <h3>Random Forest vote</h3>
+        <p>200 decision trees, each trained on essays, news, and social text, cast an independent vote.</p>
+      </div>
+      <div class="pipe-arrow" aria-hidden="true">
+        <svg viewBox="0 0 60 24"><path d="M2 12H54M54 12L42 3M54 12L42 21" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="pipe-step">
+        <span class="pipe-num">04</span>
+        <h3>Verdict &amp; confidence</h3>
+        <p>The majority vote becomes the verdict; the vote margin becomes the confidence score.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="signals">
+    <p class="section-eyebrow">What it actually measures</p>
+    <h2 class="section-title">Two signatures the model weighs most</h2>
+    <div class="signal-grid">
+      <div class="signal-card">
+        <h3>Burstiness</h3>
+        <p>Human writing swings between short, blunt sentences and long, winding ones. AI text tends to keep a steadier rhythm.</p>
+        <svg class="signal-svg" viewBox="0 0 240 60"><polyline points="0,45 20,10 40,50 60,15 80,40 100,8 120,48 140,20 160,35 180,5 200,42 220,18 240,30" fill="none" stroke="var(--sage)" stroke-width="2"/></svg>
+        <span class="signal-tag">human-leaning pattern</span>
+      </div>
+      <div class="signal-card">
+        <h3>Vocabulary richness</h3>
+        <p>The ratio of unique words to total words. AI-generated passages often sit in a narrow, consistent band.</p>
+        <svg class="signal-svg" viewBox="0 0 240 60"><polyline points="0,30 20,28 40,31 60,29 80,30 100,27 120,31 140,29 160,30 180,28 200,31 220,29 240,30" fill="none" stroke="var(--rust)" stroke-width="2"/></svg>
+        <span class="signal-tag">AI-leaning pattern</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="limits">
+    <p class="section-eyebrow">Case notes</p>
+    <h2 class="section-title">Known limitations — read before trusting a verdict</h2>
+    <p class="limits-copy">
+      This model measures writing <em>style</em>, not authorship. Highly polished
+      human writing — Wikipedia, professional journalism, careful non-native
+      English — can score close to AI-generated text, because both are
+      structurally clean. This is a documented, unsolved problem across
+      commercial AI detectors, not unique to this tool. Treat results as one
+      signal among several, never as proof.
+    </p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="stack">
+    <span>Python</span><span>Flask</span><span>scikit-learn</span><span>Random Forest</span><span>HTML/CSS/JS</span>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
