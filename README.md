@@ -2,8 +2,8 @@
 
 A full-stack machine learning web app that classifies text as **human-written** or **AI-generated**, using explainable linguistic features rather than a black-box model. Built end-to-end: data pipeline, feature engineering, model training, Flask API, and a custom UI.
 
-**Live demo:** _add your deployed link here once live_
-**Screenshots:** _add 1-2 screenshots here_
+**Live demo:** [ai-text-detector-e76z.onrender.com](https://ai-text-detector-e76z.onrender.com)
+*(hosted on Render's free tier — may take 30-60s to wake up if it hasn't been visited recently)*
 
 ---
 
